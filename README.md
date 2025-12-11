@@ -1,4 +1,4 @@
-# CVD Momentum & Regime Filter Strategy
+# CVD Momentum & Regime Filtered Risk adjusted Strategy
 
 This project implements an algorithmic trading strategy focused on **Cumulative Volume Delta (CVD) Momentum** combined with a **Daily EMA Regime filter**. The strategy is backtested on 1-minute intraday data (QQQ and SPY) with intrabar stop-loss and take-profit logic.
 
