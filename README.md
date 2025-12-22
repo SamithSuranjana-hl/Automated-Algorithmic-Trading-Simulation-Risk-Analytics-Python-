@@ -1,40 +1,36 @@
-# CVD Momentum & Regime Filtered Risk adjusted Automation
+# Quantitative Trading Framework & Intraday Momentum Strategy
+### *Microstructure-Based Signal Logic with Intrabar Execution Simulation*
 
-This project implements an algorithmic trading strategy focused on **Cumulative Volume Delta (CVD) Momentum** combined with a **Daily EMA Regime filter**. The strategy is backtested on 1-minute intraday data (QQQ and SPY) with intrabar stop-loss and take-profit logic.
+## 📌 Project Overview
+This project is a high-frequency backtesting engine developed to evaluate a momentum strategy based on **Market Microstructure (CVD)** and **Trend Regimes**. Unlike standard backtesters, this framework utilizes high-resolution 1-minute data and a custom execution engine to simulate realistic price action within a single candle, ensuring the integrity of risk-management triggers.
 
-## 📈 Strategy Logic
+## 🚀 Key Features
+* **Data Engineering:** Automated ingestion of multi-year 1-minute datasets via **Alpaca API**.
+* **Microstructure Signals:** Uses **Cumulative Volume Delta (CVD)** momentum to track institutional buying/selling pressure.
+* **Execution Integrity:** Custom **Intrabar Exit Engine** that accounts for price paths (O-L-H-C) to calculate realistic slippage and trade exits.
+* **Performance Analytics:** Institutional-grade reporting including **Sharpe Ratio**, **Max Drawdown**, and **Benchmark Comparison**.
 
-1.  **Regime Filter:** - Trades are only taken in the direction of the dominant trend.
-    - Defined by the Daily Close relative to the Daily 50 EMA (or 100 EMA for SPY).
-2.  **Momentum Trigger:** - Uses CVD (Cumulative Volume Delta) to gauge buying/selling pressure.
-    - Enters when `CVD_Momentum` crosses its rolling mean.
-3.  **Entry/Exit:**
-    - **Long:** Price > VWAP + Bullish CVD + Bullish Regime.
-    - **Short:** Price < VWAP + Bearish CVD + Bearish Regime.
-    - **Risk Management:** Fixed Risk Per Trade (1%), Risk:Reward = 1:2.
-    - **Execution:** Simulates intrabar execution (OHLC logic) to check if SL or TP was hit first within the 1-minute candle.
+## 📊 Backtesting Results (Summary)
+The following results were generated over a multi-year period using a 1% risk-per-trade model and a 2:1 Reward-to-Risk ratio.
 
-## 📊 Performance Results (3 Year Backtest)
-
-### QQQ (Nasdaq 100)
-The strategy significantly outperformed the Buy & Hold benchmark on QQQ.
-
-| Metric | Strategy | Buy & Hold |
+| Metric | QQQ (Nasdaq 100) | SPY (S&P 500) |
 | :--- | :--- | :--- |
-| **Total Return** | **141.59%** | 117.80% |
-| **End Equity** | $24,159 | $21,779 |
-| **Sharpe Ratio** | **1.34** | - |
-| **Max Drawdown** | -7.79% | - |
-| **Win Rate** | 38.29% | - |
-| **Profit Factor** | 1.24 | - |
+| **Total Return** | **141.59%** | 65.42% |
+| **Benchmark (Buy & Hold)** | 117.80% | **76.41%** |
+| **Sharpe Ratio (Rf=5%)** | **1.34** | 0.71 |
+| **Max Drawdown** | **-7.79%** | -8.72% |
+| **Profit Factor** | 1.24 | 1.21 |
+| **Number of Trades** | 1,230 | 819 |
 
-### SPY (S&P 500)
-While profitable, the strategy underperformed the strong bullish run of the SPY benchmark during this period.
+*Figure 1: Strategy Equity Curve (Green) significantly outperforming QQQ Buy & Hold (Gray) with a high Sharpe Ratio of 1.34.*
 
-| Metric | Strategy | Buy & Hold |
-| :--- | :--- | :--- |
-| **Total Return** | 65.42% | **76.41%** |
-| **Sharpe Ratio** | 0.71 | - |
-| **Max Drawdown** | -8.72% | - |
-| **Win Rate** | 37.61% | - |
+## 🛠 Strategy Architecture
+1. **Regime Filter:** 50-period Daily EMA to define the primary market direction.
+2. **Value Baseline:** Entry signals only valid when price is on the correct side of the **VWAP**.
+3. **Trigger:** Confluence of CVD momentum and trend direction.
+4. **Risk Control:** Stop-loss and Take-profit orders simulated at the intrabar level to maintain a mathematical 2:1 R:R profile.
 
+## 📂 Technical Stack
+* **Language:** Python
+* **Libraries:** Pandas, NumPy, Matplotlib, Alpaca-Historical-Data
+* **Data Format:** Apache Parquet
